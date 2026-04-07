@@ -189,12 +189,6 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--light);color:var(-
     <strong style="color:var(--pink)">This RCA focuses on the 579 customers who actively chose to cancel.</strong> Auto-cancels (system timed out after 14 days) and blanks (unknown initiator) are excluded.
   </div>
 
-  <div class="stat-row">
-    <div class="stat-card"><div class="number">579</div><div class="label">Customer-initiated cancellations</div></div>
-    <div class="stat-card"><div class="number">71%</div><div class="label">Called CX at least once<br>(412 customers)</div></div>
-    <div class="stat-card"><div class="number">0%</div><div class="label">CX save rate<br>(all 412 still cancelled)</div></div>
-    <div class="stat-card"><div class="number">50+</div><div class="label">CX & partner call recordings listened</div></div>
-  </div>
 
   <!-- Flow diagram: Where in the journey do they cancel? -->
   <div class="section-title">Where in the Flow Do Customers Cancel?</div>
@@ -391,7 +385,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--light);color:var(-
   </div>
 
   <div class="pie-basis">
-    <strong style="color:var(--pink)">Based on:</strong> 579 customer chat journeys analysed end-to-end, 50+ CX and partner call recordings listened, stated cancellation reasons classified, and customer interaction patterns profiled across CX calls, partner calls, and chatbot usage. Customers experience an average of 3.4 pain points simultaneously &mdash; the pie shows the <strong>primary driver</strong> for each customer based on journey stage and failure classification.
+    <strong style="color:var(--pink)">Based on:</strong> 579 customer chat journeys analysed end-to-end, 50+ CC and partner call recordings listened, stated cancellation reasons classified, and customer interaction patterns profiled across CC calls, partner calls, and chatbot usage. Customers experience an average of 3.4 pain points simultaneously &mdash; the pie shows the <strong>primary driver</strong> for each customer based on journey stage and failure classification.
   </div>
 
   <!-- Detailed cards below pie -->
@@ -438,10 +432,10 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--light);color:var(-
       </div>
       <div style="text-align:right">
         <div class="rc-stat" style="color:var(--orange)">412</div>
-        <div class="rc-rank">71% called CX</div>
+        <div class="rc-rank">71% called CC</div>
       </div>
     </div>
-    <div class="rc-desc">412 called CX at least once. 183 called 5+ times. One called 47 times. CX could only read status. Save rate: 0%. CX itself requested cancellation in 39 cases. Partner 75% unanswered.</div>
+    <div class="rc-desc">412 called CC at least once. 183 called 5+ times. One called 47 times. CC could only read status. Save rate: 0%. CC itself requested cancellation in 39 cases. Partner 75% unanswered.</div>
   </div>
 
   <div class="reason-card tertiary">
@@ -564,68 +558,94 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--light);color:var(-
 <div class="tab-content" id="tab3">
 <div class="content">
   <div class="section-title">Structural Gaps & Evidence</div>
-  <div class="section-subtitle">Each structural root cause with data and customer voices that prove it.</div>
+  <div class="section-subtitle">Evidence from customer calls, CC call listening, chat analysis, and journey reconstruction that supports each structural root cause. Links will be updated as files are uploaded.</div>
 
+  <!-- Gap 1 -->
   <div class="evidence-card">
     <div class="ev-header"><div class="ev-title">Gap 1: No Failure Recovery Workflow</div><div class="ev-tag">System Design Flaw</div></div>
-    <div class="ev-statement">Repeated-failure customers are routed back into BAU instead of a recovery workflow. The system has no notion of a "failed case." Each failure adds ~30h of wait and another CX call cycle.</div>
-    <div class="ev-numbers">
-      <div class="ev-num"><div class="n">127</div><div class="l">customers with 2+ failures</div></div>
-      <div class="ev-num"><div class="n">258h</div><div class="l">avg wait for 5+ failure cases</div></div>
-      <div class="ev-num"><div class="n">9</div><div class="l">customers with 5+ failures</div></div>
+    <div class="ev-statement">Repeated-failure customers are routed back into BAU instead of a recovery workflow. The system has no notion of a "failed case." Each failure adds ~30h of wait and another CC call cycle.</div>
+    <div class="verbatims-title">Evidence</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <a href="#" class="ev-link" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--light);border-radius:8px;border:1px dashed #ccc;text-decoration:none;color:var(--dark);font-size:13px">
+        <span style="font-size:20px">&#128206;</span>
+        <span><strong>CC Call Recordings &mdash; Accumulated Failure Customers</strong><br><span style="color:var(--gray);font-size:12px">Placeholder &mdash; link to be added</span></span>
+      </a>
+      <a href="#" class="ev-link" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--light);border-radius:8px;border:1px dashed #ccc;text-decoration:none;color:var(--dark);font-size:13px">
+        <span style="font-size:20px">&#128206;</span>
+        <span><strong>Customer Journey Maps &mdash; 2+ Failure Cases</strong><br><span style="color:var(--gray);font-size:12px">Placeholder &mdash; link to be added</span></span>
+      </a>
+      <a href="#" class="ev-link" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--light);border-radius:8px;border:1px dashed #ccc;text-decoration:none;color:var(--dark);font-size:13px">
+        <span style="font-size:20px">&#128206;</span>
+        <span><strong>Chat Journey Analysis &mdash; Failure Loop Patterns</strong><br><span style="color:var(--gray);font-size:12px">Placeholder &mdash; link to be added</span></span>
+      </a>
     </div>
-    <div class="verbatims-title">Customer Voices</div>
-    <div class="verbatim"><div class="v-text">"25 din ho gaye abhi tak nahi lagaye"</div><div class="v-context">25 days, still not installed</div></div>
-    <div class="verbatim"><div class="v-text">"Har baar date dete hain, koi aata nahi. Phir wahi message aata hai"</div><div class="v-context">CX call &mdash; repeated promise-break-message loop</div></div>
-    <div class="verbatim"><div class="v-text">"Maine 10 times download kar diya hai app, nothing is happening"</div><div class="v-context">CX told customer to reinstall app as troubleshooting</div></div>
   </div>
 
+  <!-- Gap 2 -->
   <div class="evidence-card">
-    <div class="ev-header"><div class="ev-title">Gap 2: No Single Source of Truth</div><div class="ev-tag">System Design Flaw</div></div>
+    <div class="ev-header"><div class="ev-title">Gap 2: No Single Source of Truth (CC / Chatbot / Partner)</div><div class="ev-tag">System Design Flaw</div></div>
     <div class="ev-statement">Every channel &mdash; chatbot, CC, tech &mdash; sees a partial view. Customer cannot get a reliable answer from anyone. CC save rate is 0%.</div>
-    <div class="ev-numbers">
-      <div class="ev-num"><div class="n">412</div><div class="l">called CX (71%)</div></div>
-      <div class="ev-num"><div class="n">0%</div><div class="l">CX save rate</div></div>
-      <div class="ev-num"><div class="n">47</div><div class="l">most calls by one customer</div></div>
+    <div class="verbatims-title">Evidence</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <a href="#" class="ev-link" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--light);border-radius:8px;border:1px dashed #ccc;text-decoration:none;color:var(--dark);font-size:13px">
+        <span style="font-size:20px">&#128206;</span>
+        <span><strong>CC Call Listening Findings</strong><br><span style="color:var(--gray);font-size:12px">Placeholder &mdash; link to be added</span></span>
+      </a>
+      <a href="#" class="ev-link" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--light);border-radius:8px;border:1px dashed #ccc;text-decoration:none;color:var(--dark);font-size:13px">
+        <span style="font-size:20px">&#128206;</span>
+        <span><strong>CC Script / SOP &mdash; What CC Agents Are Told To Say</strong><br><span style="color:var(--gray);font-size:12px">Placeholder &mdash; link to be added</span></span>
+      </a>
+      <a href="#" class="ev-link" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--light);border-radius:8px;border:1px dashed #ccc;text-decoration:none;color:var(--dark);font-size:13px">
+        <span style="font-size:20px">&#128206;</span>
+        <span><strong>Chatbot Message Templates (84 messages)</strong><br><span style="color:var(--gray);font-size:12px">Placeholder &mdash; link to be added</span></span>
+      </a>
+      <a href="#" class="ev-link" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--light);border-radius:8px;border:1px dashed #ccc;text-decoration:none;color:var(--dark);font-size:13px">
+        <span style="font-size:20px">&#128206;</span>
+        <span><strong>Partner Call Recordings</strong><br><span style="color:var(--gray);font-size:12px">Placeholder &mdash; link to be added</span></span>
+      </a>
     </div>
-    <div class="ev-numbers">
-      <div class="ev-num"><div class="n">183</div><div class="l">heavy callers (5+ calls)</div></div>
-      <div class="ev-num"><div class="n">75%</div><div class="l">partner calls unanswered</div></div>
-      <div class="ev-num"><div class="n">39</div><div class="l">CX itself requested cancel</div></div>
-    </div>
-    <div class="verbatims-title">Customer Voices</div>
-    <div class="verbatim"><div class="v-text">"Jo bhi chat mein likha hai wahi hai" &mdash; every CX call says this</div><div class="v-context">CX has no additional information beyond chatbot</div></div>
-    <div class="verbatim"><div class="v-text">"Wifi installation department mein transfer kar do, call lag nahi paa rahi hai"</div><div class="v-context">Customer transferred 3 times, nobody owned the problem</div></div>
-    <div class="verbatim"><div class="v-text">"Jab auto refund ki baat CX ne ki, toh laga cancel hi sahi hai"</div><div class="v-context">CX mentioning auto-refund pushed customer toward cancelling</div></div>
   </div>
 
+  <!-- Gap 3 -->
   <div class="evidence-card">
     <div class="ev-header"><div class="ev-title">Gap 3: Weak Pre-Booking Expectation Setting</div><div class="ev-tag">System Design Flaw</div></div>
     <div class="ev-statement">System takes booking without forcing customer to confirm they understand the install TAT. Customers benchmark against same-day competitors.</div>
-    <div class="ev-numbers">
-      <div class="ev-num"><div class="n">~90</div><div class="l">cancelled within 12h, zero failures</div></div>
-      <div class="ev-num"><div class="n">22</div><div class="l">cancelled within 6h of "2-3 days" msg</div></div>
-      <div class="ev-num"><div class="n">8</div><div class="l">explicitly switched to competitor</div></div>
+    <div class="verbatims-title">Evidence</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <a href="#" class="ev-link" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--light);border-radius:8px;border:1px dashed #ccc;text-decoration:none;color:var(--dark);font-size:13px">
+        <span style="font-size:20px">&#128206;</span>
+        <span><strong>Customer Call Recordings &mdash; Quick Exiters (0-12h)</strong><br><span style="color:var(--gray);font-size:12px">Placeholder &mdash; link to be added</span></span>
+      </a>
+      <a href="#" class="ev-link" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--light);border-radius:8px;border:1px dashed #ccc;text-decoration:none;color:var(--dark);font-size:13px">
+        <span style="font-size:20px">&#128206;</span>
+        <span><strong>Competitor Benchmarking &mdash; Install Speed Comparison</strong><br><span style="color:var(--gray);font-size:12px">Placeholder &mdash; link to be added</span></span>
+      </a>
+      <a href="#" class="ev-link" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--light);border-radius:8px;border:1px dashed #ccc;text-decoration:none;color:var(--dark);font-size:13px">
+        <span style="font-size:20px">&#128206;</span>
+        <span><strong>Booking Flow Screenshots &mdash; Where TAT Is (Not) Communicated</strong><br><span style="color:var(--gray);font-size:12px">Placeholder &mdash; link to be added</span></span>
+      </a>
     </div>
-    <div class="verbatims-title">Customer Voices</div>
-    <div class="verbatim"><div class="v-text">"Another wifi setup same day but Wiom 2 to 3 days"</div><div class="v-context">Competitor installed same day</div></div>
-    <div class="verbatim"><div class="v-text">"Mujhe behtar deal mil gayi hai"</div><div class="v-context">Cancelled within 1 hour</div></div>
-    <div class="verbatim"><div class="v-text">"Maine Airtel ka book kar liya hai isliye cancel kar raha hun"</div><div class="v-context">Direct competitor switch</div></div>
   </div>
 
+  <!-- Gap 4 -->
   <div class="evidence-card">
     <div class="ev-header"><div class="ev-title">Gap 4: Fragmented Pricing Disclosure</div><div class="ev-tag">System Design Flaw</div></div>
     <div class="ev-statement">Full cost (Rs100 + Rs300 + plan) is shown passively, not gated. Partner call becomes the pricing disclosure moment, creating bait-and-switch perception.</div>
-    <div class="ev-numbers">
-      <div class="ev-num"><div class="n">33</div><div class="l">cancelled at SD stage</div></div>
-      <div class="ev-num"><div class="n">23</div><div class="l">cited price explicitly</div></div>
-      <div class="ev-num"><div class="n">Rs 900</div><div class="l">total perceived (100+300+500)</div></div>
+    <div class="verbatims-title">Evidence</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <a href="#" class="ev-link" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--light);border-radius:8px;border:1px dashed #ccc;text-decoration:none;color:var(--dark);font-size:13px">
+        <span style="font-size:20px">&#128206;</span>
+        <span><strong>CC Call Recordings &mdash; Price Shock Customers</strong><br><span style="color:var(--gray);font-size:12px">Placeholder &mdash; link to be added</span></span>
+      </a>
+      <a href="#" class="ev-link" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--light);border-radius:8px;border:1px dashed #ccc;text-decoration:none;color:var(--dark);font-size:13px">
+        <span style="font-size:20px">&#128206;</span>
+        <span><strong>Pricing Flow Screenshots &mdash; Where Rs300 Is Shown</strong><br><span style="color:var(--gray);font-size:12px">Placeholder &mdash; link to be added</span></span>
+      </a>
+      <a href="#" class="ev-link" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--light);border-radius:8px;border:1px dashed #ccc;text-decoration:none;color:var(--dark);font-size:13px">
+        <span style="font-size:20px">&#128206;</span>
+        <span><strong>Customer Verbatims &mdash; Price-Related Cancel Reasons</strong><br><span style="color:var(--gray);font-size:12px">Placeholder &mdash; link to be added</span></span>
+      </a>
     </div>
-    <div class="verbatims-title">Customer Voices</div>
-    <div class="verbatim"><div class="v-text">"100 booking, 300 advance, 500 monthly rent = 900 total. Very high charges."</div><div class="v-context">Staggered cost discovery</div></div>
-    <div class="verbatim"><div class="v-text">"Pahle lagane pe koi security jama nahi karna padta tha, ab 300 maang rahe hain"</div><div class="v-context">Repeat customer surprised by new deposit</div></div>
-    <div class="verbatim"><div class="v-text">"Technician ne kaha range kafi kam hoga sirf 5 meter, insulation charge bhi jyada hai"</div><div class="v-context">Tech disclosed limitations + charges at the door</div></div>
-    <div class="verbatim"><div class="v-text">"My friend installed same wifi with no security money"</div><div class="v-context">Inconsistent pricing across partners</div></div>
   </div>
 
   <div style="text-align:center;margin-top:40px;padding:20px;border-top:3px solid var(--pink)">
