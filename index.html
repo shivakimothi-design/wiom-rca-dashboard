@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Install Funnel RCA — Theme 4: Why Customers Cancel</title>
+<style>
+:root{--pink:#D9008D;--pink-light:#FFF0F7;--dark:#1a1a1a;--gray:#666;--light:#f8f8f8;--white:#fff;--red:#E53935;--orange:#FF9800;--green:#43A047;--blue:#1E88E5;--purple:#7B1FA2}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--light);color:var(--dark)}
+
+.header{background:var(--dark);padding:20px 40px;display:flex;align-items:center;justify-content:space-between}
+.header h1{color:var(--white);font-size:20px;font-weight:600}
+.header h1 span{color:var(--pink)}
+.header .meta{color:#999;font-size:13px}
+
+.tabs{background:var(--white);border-bottom:3px solid var(--pink);display:flex;padding:0 40px;gap:0;flex-wrap:wrap}
+.tab{padding:14px 24px;cursor:pointer;font-size:13px;font-weight:600;color:var(--gray);border-bottom:3px solid transparent;margin-bottom:-3px;transition:all .2s}
+.tab:hover{color:var(--pink)}
+.tab.active{color:var(--pink);border-bottom-color:var(--pink);background:var(--pink-light)}
+
+.content{max-width:1200px;margin:0 auto;padding:30px 40px}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+.section-title{font-size:22px;font-weight:700;color:var(--dark);margin-bottom:8px}
+.section-subtitle{font-size:14px;color:var(--gray);margin-bottom:24px;line-height:1.5}
+
+/* Stat cards */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:30px}
+.stat-card{background:var(--white);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:center}
+.stat-card .number{font-size:34px;font-weight:700;color:var(--pink)}
+.stat-card .label{font-size:12px;color:var(--gray);margin-top:4px;line-height:1.4}
+
+/* Breakdown bar */
+.breakdown{margin:30px 0}
+.breakdown-title{font-size:14px;font-weight:600;color:var(--dark);margin-bottom:12px}
+.breakdown-bar{display:flex;height:50px;border-radius:8px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.breakdown-seg{display:flex;align-items:center;justify-content:center;flex-direction:column;color:var(--white);font-weight:600;font-size:13px;transition:all .3s;cursor:default;position:relative}
+.breakdown-seg:hover{filter:brightness(1.1)}
+.breakdown-seg .seg-label{font-size:10px;font-weight:400;opacity:.9}
+.breakdown-legend{display:flex;gap:24px;margin-top:12px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray)}
+.legend-dot{width:12px;height:12px;border-radius:3px}
+
+/* Flow diagram */
+.flow-container{margin:30px 0;overflow-x:auto}
+.flow{display:flex;flex-direction:column;align-items:center;gap:0}
+.flow-node{padding:14px 24px;border-radius:10px;text-align:center;min-width:280px;max-width:500px;position:relative;font-size:13px;line-height:1.5}
+.flow-node.start{background:var(--pink);color:var(--white);font-weight:600;font-size:15px}
+.flow-node.stage{background:var(--white);border:2px solid #ddd;color:var(--dark)}
+.flow-node.stage .node-title{font-weight:700;font-size:14px;margin-bottom:4px}
+.flow-node.stage .node-msg{font-size:11px;color:var(--gray);font-style:italic;background:#f9f9f9;padding:6px 10px;border-radius:6px;margin-top:6px}
+.flow-node.cancel{background:#FFEBEE;border:2px solid var(--red);color:var(--red);font-weight:600}
+.flow-node.cancel .cancel-count{font-size:20px;font-weight:700}
+.flow-arrow{font-size:22px;color:var(--pink);margin:4px 0;font-weight:700}
+.flow-drop{display:flex;align-items:center;gap:8px;margin:4px 0}
+.flow-drop-line{width:60px;height:2px;background:var(--red)}
+.flow-drop-box{background:#FFEBEE;border:1px solid #FFCDD2;border-radius:6px;padding:6px 14px;font-size:12px;color:var(--red);font-weight:600;white-space:nowrap}
+
+/* Branches */
+.flow-branches{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+.flow-branch{flex:1;min-width:200px;max-width:280px}
+.flow-branch .flow-node{min-width:unset;width:100%;font-size:12px}
+.flow-branch .flow-node .node-msg{font-size:10px}
+.branch-line{width:2px;height:20px;background:var(--pink);margin:0 auto}
+
+/* Pie chart */
+.pie-section{display:flex;gap:30px;align-items:flex-start;flex-wrap:wrap;margin:24px 0}
+.pie-wrap{flex-shrink:0}
+.pie-legend{flex:1;min-width:300px}
+.pie-legend-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #eee;font-size:14px}
+.pie-legend-item:last-child{border-bottom:none}
+.pie-legend-dot{width:16px;height:16px;border-radius:4px;flex-shrink:0}
+.pie-legend-pct{font-weight:700;font-size:16px;color:var(--pink);min-width:45px}
+.pie-legend-label{color:var(--dark)}
+.pie-legend-hindi{font-size:12px;color:var(--gray);font-style:italic}
+.pie-basis{background:var(--pink-light);border-radius:8px;padding:14px 18px;margin-top:16px;font-size:12px;color:var(--gray);line-height:1.5;border-left:4px solid var(--pink)}
+
+/* Reason cards */
+.reason-card{background:var(--white);border-radius:12px;padding:28px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:5px solid var(--pink)}
+.reason-card.secondary{border-left-color:var(--orange)}
+.reason-card.tertiary{border-left-color:var(--blue)}
+.reason-card.cross-theme{border-left-color:var(--gray);opacity:.85}
+.rc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.rc-rank{font-size:12px;color:var(--white);background:var(--pink);padding:3px 12px;border-radius:20px;font-weight:600}
+.reason-card.secondary .rc-rank{background:var(--orange)}
+.reason-card.tertiary .rc-rank{background:var(--blue)}
+.reason-card.cross-theme .rc-rank{background:var(--gray)}
+.rc-title{font-size:18px;font-weight:700;color:var(--dark);margin-bottom:4px}
+.rc-hindi{font-size:14px;color:var(--pink);font-style:italic;margin-bottom:10px}
+.rc-stat{font-size:28px;font-weight:700;color:var(--pink)}
+.rc-desc{font-size:14px;color:var(--gray);line-height:1.6;margin-top:8px}
+.sub-types{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.sub-type{background:var(--pink-light);border-radius:8px;padding:16px;text-align:center}
+.sub-type .st-label{font-size:11px;color:var(--pink);font-weight:600;text-transform:uppercase;margin-bottom:4px}
+.sub-type .st-name{font-size:13px;font-weight:600;color:var(--dark);margin-bottom:4px}
+.sub-type .st-count{font-size:20px;font-weight:700;color:var(--pink)}
+.sub-type .st-desc{font-size:11px;color:var(--gray);margin-top:4px}
+.other-reasons{background:var(--white);border-radius:12px;padding:20px 28px;margin-top:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.other-reasons h4{font-size:14px;color:var(--gray);margin-bottom:12px}
+.other-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #eee;font-size:13px}
+.other-item:last-child{border-bottom:none}
+.other-item .oi-count{color:var(--pink);font-weight:600}
+
+/* Root Cause Chains */
+.chain{background:var(--white);border-radius:12px;padding:28px;margin-bottom:30px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.chain-title{font-size:16px;font-weight:700;color:var(--dark);margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--pink)}
+.chain-step{display:flex;gap:14px;align-items:flex-start;margin-bottom:4px}
+.chain-badge{min-width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:13px;flex-shrink:0;margin-top:2px}
+.chain-badge.fail{background:var(--red)}.chain-badge.why{background:var(--pink)}.chain-badge.root{background:var(--dark)}.chain-badge.cross{background:var(--gray)}
+.chain-text{font-size:14px;color:var(--dark);line-height:1.6;padding:10px 16px;background:var(--light);border-radius:8px;flex:1}
+.chain-text.fail-text{background:#FFEBEE;border-left:3px solid var(--red)}
+.chain-text.root-text{background:#E8E8E8;border-left:3px solid var(--dark);font-weight:600}
+.chain-text.cross-text{background:#F5F5F5;border-left:3px solid var(--gray);font-style:italic}
+.chain-arrow-down{text-align:center;color:var(--pink);font-size:20px;margin:2px 0 2px 12px}
+.chain-tag{display:inline-block;background:var(--pink-light);color:var(--pink);font-size:11px;font-weight:600;padding:3px 10px;border-radius:12px;margin-top:8px}
+
+/* Evidence */
+.evidence-card{background:var(--white);border-radius:12px;padding:28px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.ev-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--pink)}
+.ev-title{font-size:16px;font-weight:700;color:var(--dark)}
+.ev-tag{font-size:11px;color:var(--white);background:var(--pink);padding:4px 12px;border-radius:20px;font-weight:600}
+.ev-statement{font-size:14px;color:var(--dark);line-height:1.7;margin-bottom:20px;padding:16px;background:var(--light);border-radius:8px;border-left:4px solid var(--pink)}
+.ev-numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.ev-num{text-align:center;padding:14px;background:var(--pink-light);border-radius:8px}
+.ev-num .n{font-size:24px;font-weight:700;color:var(--pink)}
+.ev-num .l{font-size:11px;color:var(--gray);margin-top:2px}
+.verbatim{background:var(--light);border-radius:8px;padding:14px 18px;margin-bottom:10px;border-left:3px solid var(--orange)}
+.verbatim .v-text{font-size:14px;color:var(--dark);font-style:italic;line-height:1.5}
+.verbatim .v-context{font-size:11px;color:var(--gray);margin-top:4px}
+.verbatims-title{font-size:13px;font-weight:600;color:var(--gray);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+
+@media(max-width:768px){
+  .stat-row{grid-template-columns:repeat(2,1fr)}
+  .sub-types{grid-template-columns:1fr}
+  .ev-numbers{grid-template-columns:1fr}
+  .pie-section{flex-direction:column}
+  .flow-branches{flex-direction:column;align-items:center}
+  .content{padding:20px}
+  .tabs{padding:0 16px}
+  .header{padding:16px 20px;flex-direction:column;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1><span>Wiom</span> Install Funnel Task Force &mdash; Theme 4: Post-Booking Comms & UX</h1>
+  <div class="meta">Root Cause Workshop | April 2026 | Owner: Shiva</div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)">Overview & Funnel</div>
+  <div class="tab" onclick="switchTab(1)">Why Customers Cancel</div>
+  <div class="tab" onclick="switchTab(2)">Root Cause Chains</div>
+  <div class="tab" onclick="switchTab(3)">Structural Gaps & Evidence</div>
+</div>
+
+<!-- ==================== TAB 1: OVERVIEW ==================== -->
+<div class="tab-content active" id="tab0">
+<div class="content">
+
+  <div class="section-title">Objective</div>
+  <div class="section-subtitle">Diagnose why customers who actively initiate cancellation do so. Identify structural system gaps &mdash; not individual blame, not solutions. Data-led, evidence-backed.</div>
+
+  <!-- Breakdown bar: Total → 3 buckets -->
+  <div class="breakdown">
+    <div class="breakdown-title">1,764 customers paid booking fee &mdash; who cancelled and why?</div>
+    <div class="breakdown-bar">
+      <div class="breakdown-seg" style="width:47.4%;background:#999" title="836 Auto-cancelled (cops_unserviceable)">
+        836<span class="seg-label">&nbsp;Auto-cancel</span>
+      </div>
+      <div class="breakdown-seg" style="width:19.8%;background:#bbb" title="349 Blank / Unknown initiator">
+        349<span class="seg-label">&nbsp;Blank</span>
+      </div>
+      <div class="breakdown-seg" style="width:32.8%;background:var(--pink)" title="579 Customer-initiated">
+        579<span class="seg-label">&nbsp;Self-initiated</span>
+      </div>
+    </div>
+    <div class="breakdown-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#999"></div>Auto-cancelled by system (cops_unserviceable) &mdash; 836 (47%)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#bbb"></div>Blank / initiator not tagged &mdash; 349 (20%)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--pink)"></div><strong>Customer self-initiated &mdash; 579 (33%) &larr; Our focus</strong></div>
+    </div>
+  </div>
+
+  <div style="background:var(--pink-light);border-radius:8px;padding:14px 18px;border-left:4px solid var(--pink);margin-bottom:30px;font-size:13px">
+    <strong style="color:var(--pink)">This RCA focuses on the 579 customers who actively chose to cancel.</strong> Auto-cancels (system timed out after 14 days) and blanks (unknown initiator) are excluded.
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card"><div class="number">579</div><div class="label">Customer-initiated cancellations</div></div>
+    <div class="stat-card"><div class="number">71%</div><div class="label">Called CX at least once<br>(412 customers)</div></div>
+    <div class="stat-card"><div class="number">0%</div><div class="label">CX save rate<br>(all 412 still cancelled)</div></div>
+    <div class="stat-card"><div class="number">50+</div><div class="label">CX & partner call recordings listened</div></div>
+  </div>
+
+  <!-- Flow diagram: Where in the journey do they cancel? -->
+  <div class="section-title">Where in the Flow Do Customers Cancel?</div>
+  <div class="section-subtitle">The customer journey from booking to install, with chatbot messages shown at each stage. Numbers show where the 579 self-initiated cancellations happened.</div>
+
+  <div class="flow-container">
+  <div class="flow">
+
+    <!-- Booking Fee Paid -->
+    <div class="flow-node start">Booking Fee Paid (Rs 100) &mdash; 579 customers</div>
+    <div class="flow-arrow">&darr;</div>
+
+    <!-- G2 Check -->
+    <div class="flow-node stage">
+      <div class="node-title">G2 Serviceability Check</div>
+      <div class="node-msg">If unserviceable: "We are currently not available at your location. Try a different location, or cancel."</div>
+    </div>
+    <div class="flow-drop">
+      <div class="flow-drop-line"></div>
+      <div class="flow-drop-box">19 cancel &mdash; Unserviceable (3%)</div>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+
+    <!-- Booking Confirmed -->
+    <div class="flow-node stage">
+      <div class="node-title">Booking Confirmed</div>
+      <div class="node-msg">"Your booking is confirmed. You may receive a call from Wiom to confirm setup time."</div>
+    </div>
+    <div class="flow-drop">
+      <div class="flow-drop-line"></div>
+      <div class="flow-drop-box">9 cancel &mdash; Pre-G2 / Early exit (2%)</div>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+
+    <!-- Partner Matching -->
+    <div class="flow-node stage">
+      <div class="node-title">Partner Matching (Notification Sent)</div>
+      <div class="node-msg">System notifies partners. If no interest: "Currently no engineer available. Share address again or cancel."</div>
+    </div>
+    <div class="flow-drop">
+      <div class="flow-drop-line"></div>
+      <div class="flow-drop-box">124 cancel &mdash; Zero Partner Interest (21%)</div>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+
+    <!-- Slot Selection -->
+    <div class="flow-node stage">
+      <div class="node-title">Slot Proposed &amp; Confirmed</div>
+      <div class="node-msg">"Does [date] work for you?" &rarr; Customer confirms &rarr; "Your slot is confirmed for [date]"</div>
+    </div>
+    <div class="flow-drop">
+      <div class="flow-drop-line"></div>
+      <div class="flow-drop-box">27 cancel &mdash; Slot confirmed, waiting for tech (5%)</div>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+
+    <!-- Branches: What happens at slot -->
+    <div class="flow-branches">
+      <div class="flow-branch">
+        <div class="flow-node cancel" style="font-size:12px">
+          <div>Slot Breached<br>(no Rohit assigned)</div>
+          <div class="cancel-count">34</div>
+          <div style="font-size:11px;margin-top:4px">6% of cancels</div>
+        </div>
+        <div style="font-size:10px;color:var(--gray);text-align:center;margin-top:6px;font-style:italic">"Technical reasons, taking longer. Please wait."<br>Cancel CTA in message</div>
+      </div>
+      <div class="flow-branch">
+        <div class="flow-node stage" style="border-color:var(--green)">
+          <div class="node-title">Tech/Rohit Assigned</div>
+          <div class="node-msg">"[Tech name] will set up your Net. Call them at [number]"</div>
+        </div>
+      </div>
+      <div class="flow-branch">
+        <div class="flow-node cancel" style="font-size:12px">
+          <div>Partner Declined<br>&rarr; back to G2</div>
+          <div class="cancel-count">97</div>
+          <div style="font-size:11px;margin-top:4px">17% of cancels</div>
+        </div>
+        <div style="font-size:10px;color:var(--gray);text-align:center;margin-top:6px;font-style:italic">"Engineer not available, looking for another."<br>Cancel CTA offered</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">&darr;</div>
+
+    <!-- Tech Assigned outcomes -->
+    <div class="flow-node stage" style="border-color:var(--green)">
+      <div class="node-title">Tech Assigned &mdash; What happens next?</div>
+    </div>
+
+    <div class="flow-branches">
+      <div class="flow-branch">
+        <div class="flow-node cancel" style="font-size:12px">
+          <div>Tech assigned,<br>no failure yet</div>
+          <div class="cancel-count">80</div>
+          <div style="font-size:11px;margin-top:4px">14% &mdash; cancelled before tech could act</div>
+        </div>
+      </div>
+      <div class="flow-branch">
+        <div class="flow-node cancel" style="font-size:12px">
+          <div>Slot breached &mdash;<br>tech no-show</div>
+          <div class="cancel-count">125</div>
+          <div style="font-size:11px;margin-top:4px">22% &mdash; biggest single drop</div>
+        </div>
+        <div style="font-size:10px;color:var(--gray);text-align:center;margin-top:6px;font-style:italic">"Due to technical reasons, taking longer."<br>Cancel CTA in 2nd message</div>
+      </div>
+      <div class="flow-branch">
+        <div class="flow-node stage" style="border-color:var(--green);font-size:12px">
+          <div class="node-title">Tech Arrived</div>
+          <div style="font-size:11px;color:var(--gray)">Only 40 of 334 assigned (12%)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">&darr;</div>
+
+    <!-- SD Stage -->
+    <div class="flow-node stage" style="border-color:var(--blue)">
+      <div class="node-title">Security Deposit Stage (Rs 300)</div>
+      <div class="node-msg">Rs 300 security deposit prompted on app after tech arrives</div>
+    </div>
+    <div class="flow-drop">
+      <div class="flow-drop-line"></div>
+      <div class="flow-drop-box">32 cancel &mdash; Price shock at SD (6%)</div>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+
+    <div class="flow-node start" style="background:var(--green)">Installation Complete</div>
+
+  </div>
+  </div>
+
+  <div style="background:var(--pink-light);border-radius:8px;padding:16px 20px;border-left:4px solid var(--pink);margin-top:20px;font-size:13px">
+    <strong style="color:var(--pink)">Key Insight:</strong> The biggest single drop is after tech is assigned but doesn't show up &mdash; 125 cancellations (22%). Combined with partner declines (97) and zero partner interest (124), supply-side failures account for 60% of all cancellations.
+  </div>
+
+</div>
+</div>
+
+<!-- ==================== TAB 2: WHY CUSTOMERS CANCEL ==================== -->
+<div class="tab-content" id="tab1">
+<div class="content">
+
+  <div class="section-title">Why Customers Cancel</div>
+  <div class="section-subtitle">Top reasons ranked by volume, based on analysis of all 579 customer-initiated cancellations.</div>
+
+  <!-- Pie chart + legend -->
+  <div class="pie-section">
+    <div class="pie-wrap">
+      <svg width="260" height="260" viewBox="0 0 260 260">
+        <!-- Pie: Service Fulfilment 66%, Info Architecture 16%, Price 6%, Serviceability 3%, Other 9% -->
+        <!-- Using conic gradient approximation with SVG arcs -->
+        <circle cx="130" cy="130" r="110" fill="none" stroke="#D9008D" stroke-width="50"
+          stroke-dasharray="455.5 690.8" stroke-dashoffset="0" transform="rotate(-90 130 130)"/>
+        <circle cx="130" cy="130" r="110" fill="none" stroke="#FF9800" stroke-width="50"
+          stroke-dasharray="110.6 690.8" stroke-dashoffset="-455.5" transform="rotate(-90 130 130)"/>
+        <circle cx="130" cy="130" r="110" fill="none" stroke="#1E88E5" stroke-width="50"
+          stroke-dasharray="41.4 690.8" stroke-dashoffset="-566.1" transform="rotate(-90 130 130)"/>
+        <circle cx="130" cy="130" r="110" fill="none" stroke="#999" stroke-width="50"
+          stroke-dasharray="20.7 690.8" stroke-dashoffset="-607.5" transform="rotate(-90 130 130)"/>
+        <circle cx="130" cy="130" r="110" fill="none" stroke="#ccc" stroke-width="50"
+          stroke-dasharray="62.6 690.8" stroke-dashoffset="-628.2" transform="rotate(-90 130 130)"/>
+        <circle cx="130" cy="130" r="80" fill="var(--white)"/>
+        <text x="130" y="125" text-anchor="middle" font-size="28" font-weight="700" fill="var(--dark)">579</text>
+        <text x="130" y="148" text-anchor="middle" font-size="11" fill="var(--gray)">cancellations</text>
+      </svg>
+    </div>
+    <div class="pie-legend">
+      <div class="pie-legend-item">
+        <div class="pie-legend-dot" style="background:#D9008D"></div>
+        <div class="pie-legend-pct">66%</div>
+        <div><div class="pie-legend-label"><strong>Service Fulfilment Failure</strong></div><div class="pie-legend-hindi">"Koi aaya nahi lagane" / "Bohot wait kar liya"</div></div>
+      </div>
+      <div class="pie-legend-item">
+        <div class="pie-legend-dot" style="background:#FF9800"></div>
+        <div class="pie-legend-pct">16%</div>
+        <div><div class="pie-legend-label"><strong>Fragmented Information Architecture</strong></div><div class="pie-legend-hindi">"Koi madad nahi kar paa raha"</div></div>
+      </div>
+      <div class="pie-legend-item">
+        <div class="pie-legend-dot" style="background:#1E88E5"></div>
+        <div class="pie-legend-pct">6%</div>
+        <div><div class="pie-legend-label"><strong>Price Shock</strong></div><div class="pie-legend-hindi">"300 rupay aur dene padenge?"</div></div>
+      </div>
+      <div class="pie-legend-item">
+        <div class="pie-legend-dot" style="background:#999"></div>
+        <div class="pie-legend-pct">3%</div>
+        <div><div class="pie-legend-label"><strong>Serviceability Failure</strong></div><div class="pie-legend-hindi">"Ab bata raha hai ki nahi lag payega?" (Cross-Theme 1)</div></div>
+      </div>
+      <div class="pie-legend-item">
+        <div class="pie-legend-dot" style="background:#ccc"></div>
+        <div class="pie-legend-pct">9%</div>
+        <div><div class="pie-legend-label">Other (competitor switch, accidental, out of station, etc.)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pie-basis">
+    <strong style="color:var(--pink)">Based on:</strong> 579 customer chat journeys analysed end-to-end, 50+ CX and partner call recordings listened, stated cancellation reasons classified, and customer interaction patterns profiled across CX calls, partner calls, and chatbot usage. Customers experience an average of 3.4 pain points simultaneously &mdash; the pie shows the <strong>primary driver</strong> for each customer based on journey stage and failure classification.
+  </div>
+
+  <!-- Detailed cards below pie -->
+  <div style="margin-top:30px">
+  <div class="reason-card">
+    <div class="rc-header">
+      <div>
+        <div class="rc-title">1. Service Fulfilment Failure</div>
+        <div class="rc-hindi">"Koi aaya nahi lagane" / "Bohot wait kar liya"</div>
+      </div>
+      <div style="text-align:right">
+        <div class="rc-stat">~382</div>
+        <div class="rc-rank">66% of cancellations</div>
+      </div>
+    </div>
+    <div class="rc-desc">The install simply didn't happen. But "delay" means different things &mdash; unpacking reveals 3 distinct patterns:</div>
+    <div class="sub-types">
+      <div class="sub-type">
+        <div class="st-label">Type A</div>
+        <div class="st-name">Expectation Mismatch</div>
+        <div class="st-count">~90</div>
+        <div class="st-desc">Cancelled within 12h, zero failures. Expected same-day like Jio/Airtel.</div>
+      </div>
+      <div class="sub-type">
+        <div class="st-label">Type B</div>
+        <div class="st-name">Broken Promise</div>
+        <div class="st-count">~165</div>
+        <div class="st-desc">Had date confirmed, tech didn't show. Slot breach or partner decline.</div>
+      </div>
+      <div class="sub-type">
+        <div class="st-label">Type C</div>
+        <div class="st-name">Accumulated Failure</div>
+        <div class="st-count">~127</div>
+        <div class="st-desc">2+ failures, repeated loop, avg wait 127h. System kept re-promising.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reason-card secondary">
+    <div class="rc-header">
+      <div>
+        <div class="rc-title">2. Fragmented Information Architecture</div>
+        <div class="rc-hindi">"Koi madad nahi kar paa raha"</div>
+      </div>
+      <div style="text-align:right">
+        <div class="rc-stat" style="color:var(--orange)">412</div>
+        <div class="rc-rank">71% called CX</div>
+      </div>
+    </div>
+    <div class="rc-desc">412 called CX at least once. 183 called 5+ times. One called 47 times. CX could only read status. Save rate: 0%. CX itself requested cancellation in 39 cases. Partner 75% unanswered.</div>
+  </div>
+
+  <div class="reason-card tertiary">
+    <div class="rc-header">
+      <div>
+        <div class="rc-title">3. Price Shock</div>
+        <div class="rc-hindi">"300 rupay aur dene padenge? Yeh toh pehle nahi pata tha"</div>
+      </div>
+      <div style="text-align:right">
+        <div class="rc-stat" style="color:var(--blue)">33</div>
+        <div class="rc-rank">6% at SD stage</div>
+      </div>
+    </div>
+    <div class="rc-desc">33 cancelled at security deposit stage. 23 explicitly cited price. Full cost (Rs100 + Rs300 + plan) shown passively &mdash; customers learn real total from partner call.</div>
+  </div>
+
+  <div class="reason-card cross-theme">
+    <div class="rc-header">
+      <div>
+        <div class="rc-title">4. Serviceability Failure</div>
+        <div class="rc-hindi">"Ab bata raha hai ki nahi lag payega?"</div>
+      </div>
+      <div style="text-align:right">
+        <div class="rc-stat" style="color:var(--gray)">19</div>
+        <div class="rc-rank">Cross-Theme 1</div>
+      </div>
+    </div>
+    <div class="rc-desc">19 cancellations from post-booking G2 check failure. Payment collected before serviceability confirmed. Flagged to Theme 1.</div>
+  </div>
+  </div>
+
+  <div class="other-reasons">
+    <h4>Other Stated Reasons (lower volume)</h4>
+    <div class="other-item"><span>Competitor switch (Airtel, Jio, "better deal")</span><span class="oi-count">8</span></div>
+    <div class="other-item"><span>Accidental booking / "galti se ho gaya"</span><span class="oi-count">~5</span></div>
+    <div class="other-item"><span>Out of station / shifting home</span><span class="oi-count">~4</span></div>
+    <div class="other-item"><span>Existing Wiom customer (wanted recharge, not booking)</span><span class="oi-count">~3</span></div>
+    <div class="other-item"><span>Tech disintermediation ("engineer said install another wifi")</span><span class="oi-count">2</span></div>
+  </div>
+
+</div>
+</div>
+
+<!-- ==================== TAB 3: ROOT CAUSE CHAINS ==================== -->
+<div class="tab-content" id="tab2">
+<div class="content">
+  <div class="section-title">Root Cause Chains</div>
+  <div class="section-subtitle">Each chain starts from the observable failure and asks "why" until it hits a system design decision. No solutions &mdash; just diagnosis.</div>
+
+  <div class="chain">
+    <div class="chain-title">Pain Point 1A &mdash; Expectation Mismatch: "Thoda jaldi nahi ho sakta kya?"</div>
+    <div class="chain-step"><div class="chain-badge fail">!</div><div class="chain-text fail-text"><strong>Observable Failure:</strong> ~90 customers (~16%) cancelled within 12h with zero system failures. They simply expected install to happen faster.</div></div>
+    <div class="chain-arrow-down">&darr;</div>
+    <div class="chain-step"><div class="chain-badge why">&darr;</div><div class="chain-text"><strong>Why?</strong> Mental model is same-day activation, benchmarked against Jio, Airtel and local cable.</div></div>
+    <div class="chain-arrow-down">&darr;</div>
+    <div class="chain-step"><div class="chain-badge why">&darr;</div><div class="chain-text"><strong>Why?</strong> Booking journey did not anchor expected install TAT upfront. No explicit timeline acknowledgment before booking.</div></div>
+    <div class="chain-arrow-down">&darr;</div>
+    <div class="chain-step"><div class="chain-badge root">&bull;</div><div class="chain-text root-text">Pre-booking expectation setting on installation speed is weak. System takes booking without forcing customer to confirm they understand the install TAT.</div></div>
+    <div class="chain-tag">System Design Flaw</div>
+  </div>
+
+  <div class="chain">
+    <div class="chain-title">Pain Point 1B &mdash; Broken Promise: "Koi aaya nahi lagane"</div>
+    <div class="chain-step"><div class="chain-badge fail">!</div><div class="chain-text fail-text"><strong>Observable Failure:</strong> ~165 customers (~29%) had date confirmed, tech did not arrive. 86% of techs take action but only 52% convert to install.</div></div>
+    <div class="chain-arrow-down">&darr;</div>
+    <div class="chain-step"><div class="chain-badge why">&darr;</div><div class="chain-text"><strong>Why?</strong> Partner / technician did not execute after confirming the committed slot.</div></div>
+    <div class="chain-arrow-down">&darr;</div>
+    <div class="chain-step"><div class="chain-badge cross">CT</div><div class="chain-text cross-text"><strong>Cross-Theme 3:</strong> Supply-side execution failure. Our finding: the comms system uses "confirmed" for an unconfirmed promise, amplifying the damage.</div></div>
+    <div class="chain-tag">Cross-Theme 3 (Supply/Tech)</div>
+  </div>
+
+  <div class="chain">
+    <div class="chain-title">Pain Point 1C &mdash; Accumulated System Failure: "Bohot der se wait kar rahe hai"</div>
+    <div class="chain-step"><div class="chain-badge fail">!</div><div class="chain-text fail-text"><strong>Observable Failure:</strong> 127 customers (22%) cancelled after 2+ failures. 9 experienced 5+ failures, avg 258h wait. After each failure, routed back into same loop.</div></div>
+    <div class="chain-arrow-down">&darr;</div>
+    <div class="chain-step"><div class="chain-badge why">&darr;</div><div class="chain-text"><strong>Why?</strong> Repeated failed attempts exhausted trust. Customer re-entered the same scheduling loop each time.</div></div>
+    <div class="chain-arrow-down">&darr;</div>
+    <div class="chain-step"><div class="chain-badge why">&darr;</div><div class="chain-text"><strong>Why?</strong> Failed cases not differentiated from first-time installs. No escalation-based process exists.</div></div>
+    <div class="chain-arrow-down">&darr;</div>
+    <div class="chain-step"><div class="chain-badge root">&bull;</div><div class="chain-text root-text">Repeated-failure customers are routed back into BAU instead of a recovery workflow. System has no notion of a "failed case" that needs different handling.</div></div>
+    <div class="chain-tag">System Design Flaw</div>
+  </div>
+
+  <div class="chain">
+    <div class="chain-title">Pain Point 2 &mdash; Fragmented Information Architecture: "Koi madad nahi kar paa raha"</div>
+    <div class="chain-step"><div class="chain-badge fail">!</div><div class="chain-text fail-text"><strong>Observable Failure:</strong> 412 (71%) called CC. 183 (32%) heavy callers (5+). One called 47 times. CC save rate: 0%. CC itself requested cancellation in 39 cases.</div></div>
+    <div class="chain-arrow-down">&darr;</div>
+    <div class="chain-step"><div class="chain-badge why">&darr;</div><div class="chain-text"><strong>Why?</strong> Customers could not understand booking status. No clear, reliable update available anywhere.</div></div>
+    <div class="chain-arrow-down">&darr;</div>
+    <div class="chain-step"><div class="chain-badge why">&darr;</div><div class="chain-text"><strong>Why?</strong> CC, bot and tech don't reflect the same information. Partner-side updates not synced to customer-facing systems in real time.</div></div>
+    <div class="chain-arrow-down">&darr;</div>
+    <div class="chain-step"><div class="chain-badge root">&bull;</div><div class="chain-text root-text">No single source of truth for customer's install state. Every channel sees a partial view, so customer cannot get a reliable answer from anyone.</div></div>
+    <div class="chain-tag">System Design Flaw</div>
+  </div>
+
+  <div class="chain">
+    <div class="chain-title">Pain Point 3 &mdash; Serviceability Failures: "Ab bata raha hai ki nahi lag payega?"</div>
+    <div class="chain-step"><div class="chain-badge fail">!</div><div class="chain-text fail-text"><strong>Observable Failure:</strong> 19 cancellations (3.3%) from post-booking G2 check failures.</div></div>
+    <div class="chain-arrow-down">&darr;</div>
+    <div class="chain-step"><div class="chain-badge cross">CT</div><div class="chain-text cross-text"><strong>Cross-Theme 1 (Serviceability):</strong> Payment collected before serviceability confirmed.</div></div>
+    <div class="chain-tag">Cross-Theme 1</div>
+  </div>
+
+  <div class="chain">
+    <div class="chain-title">Pain Point 4 &mdash; Price Shock: "300 rupay aur dene padenge?"</div>
+    <div class="chain-step"><div class="chain-badge fail">!</div><div class="chain-text fail-text"><strong>Observable Failure:</strong> 33 (6%) cancelled at SD stage. 23 explicitly cited price. Surprise at Rs100 + Rs300 + plan total.</div></div>
+    <div class="chain-arrow-down">&darr;</div>
+    <div class="chain-step"><div class="chain-badge why">&darr;</div><div class="chain-text"><strong>Why?</strong> Rs300 SD discovered late, after Rs100 booking. Full payable not communicated repeatedly before SD stage.</div></div>
+    <div class="chain-arrow-down">&darr;</div>
+    <div class="chain-step"><div class="chain-badge why">&darr;</div><div class="chain-text"><strong>Why?</strong> Pricing disclosure designed as transactional detail at each stage, not a single upfront expectation reset.</div></div>
+    <div class="chain-arrow-down">&darr;</div>
+    <div class="chain-step"><div class="chain-badge root">&bull;</div><div class="chain-text root-text">Upfront commercial expectations are not reset repeatedly enough. Pricing is passive and fragmented, not an active confirmation gate.</div></div>
+    <div class="chain-tag">System Design Flaw</div>
+  </div>
+
+</div>
+</div>
+
+<!-- ==================== TAB 4: EVIDENCE ==================== -->
+<div class="tab-content" id="tab3">
+<div class="content">
+  <div class="section-title">Structural Gaps & Evidence</div>
+  <div class="section-subtitle">Each structural root cause with data and customer voices that prove it.</div>
+
+  <div class="evidence-card">
+    <div class="ev-header"><div class="ev-title">Gap 1: No Failure Recovery Workflow</div><div class="ev-tag">System Design Flaw</div></div>
+    <div class="ev-statement">Repeated-failure customers are routed back into BAU instead of a recovery workflow. The system has no notion of a "failed case." Each failure adds ~30h of wait and another CX call cycle.</div>
+    <div class="ev-numbers">
+      <div class="ev-num"><div class="n">127</div><div class="l">customers with 2+ failures</div></div>
+      <div class="ev-num"><div class="n">258h</div><div class="l">avg wait for 5+ failure cases</div></div>
+      <div class="ev-num"><div class="n">9</div><div class="l">customers with 5+ failures</div></div>
+    </div>
+    <div class="verbatims-title">Customer Voices</div>
+    <div class="verbatim"><div class="v-text">"25 din ho gaye abhi tak nahi lagaye"</div><div class="v-context">25 days, still not installed</div></div>
+    <div class="verbatim"><div class="v-text">"Har baar date dete hain, koi aata nahi. Phir wahi message aata hai"</div><div class="v-context">CX call &mdash; repeated promise-break-message loop</div></div>
+    <div class="verbatim"><div class="v-text">"Maine 10 times download kar diya hai app, nothing is happening"</div><div class="v-context">CX told customer to reinstall app as troubleshooting</div></div>
+  </div>
+
+  <div class="evidence-card">
+    <div class="ev-header"><div class="ev-title">Gap 2: No Single Source of Truth</div><div class="ev-tag">System Design Flaw</div></div>
+    <div class="ev-statement">Every channel &mdash; chatbot, CC, tech &mdash; sees a partial view. Customer cannot get a reliable answer from anyone. CC save rate is 0%.</div>
+    <div class="ev-numbers">
+      <div class="ev-num"><div class="n">412</div><div class="l">called CX (71%)</div></div>
+      <div class="ev-num"><div class="n">0%</div><div class="l">CX save rate</div></div>
+      <div class="ev-num"><div class="n">47</div><div class="l">most calls by one customer</div></div>
+    </div>
+    <div class="ev-numbers">
+      <div class="ev-num"><div class="n">183</div><div class="l">heavy callers (5+ calls)</div></div>
+      <div class="ev-num"><div class="n">75%</div><div class="l">partner calls unanswered</div></div>
+      <div class="ev-num"><div class="n">39</div><div class="l">CX itself requested cancel</div></div>
+    </div>
+    <div class="verbatims-title">Customer Voices</div>
+    <div class="verbatim"><div class="v-text">"Jo bhi chat mein likha hai wahi hai" &mdash; every CX call says this</div><div class="v-context">CX has no additional information beyond chatbot</div></div>
+    <div class="verbatim"><div class="v-text">"Wifi installation department mein transfer kar do, call lag nahi paa rahi hai"</div><div class="v-context">Customer transferred 3 times, nobody owned the problem</div></div>
+    <div class="verbatim"><div class="v-text">"Jab auto refund ki baat CX ne ki, toh laga cancel hi sahi hai"</div><div class="v-context">CX mentioning auto-refund pushed customer toward cancelling</div></div>
+  </div>
+
+  <div class="evidence-card">
+    <div class="ev-header"><div class="ev-title">Gap 3: Weak Pre-Booking Expectation Setting</div><div class="ev-tag">System Design Flaw</div></div>
+    <div class="ev-statement">System takes booking without forcing customer to confirm they understand the install TAT. Customers benchmark against same-day competitors.</div>
+    <div class="ev-numbers">
+      <div class="ev-num"><div class="n">~90</div><div class="l">cancelled within 12h, zero failures</div></div>
+      <div class="ev-num"><div class="n">22</div><div class="l">cancelled within 6h of "2-3 days" msg</div></div>
+      <div class="ev-num"><div class="n">8</div><div class="l">explicitly switched to competitor</div></div>
+    </div>
+    <div class="verbatims-title">Customer Voices</div>
+    <div class="verbatim"><div class="v-text">"Another wifi setup same day but Wiom 2 to 3 days"</div><div class="v-context">Competitor installed same day</div></div>
+    <div class="verbatim"><div class="v-text">"Mujhe behtar deal mil gayi hai"</div><div class="v-context">Cancelled within 1 hour</div></div>
+    <div class="verbatim"><div class="v-text">"Maine Airtel ka book kar liya hai isliye cancel kar raha hun"</div><div class="v-context">Direct competitor switch</div></div>
+  </div>
+
+  <div class="evidence-card">
+    <div class="ev-header"><div class="ev-title">Gap 4: Fragmented Pricing Disclosure</div><div class="ev-tag">System Design Flaw</div></div>
+    <div class="ev-statement">Full cost (Rs100 + Rs300 + plan) is shown passively, not gated. Partner call becomes the pricing disclosure moment, creating bait-and-switch perception.</div>
+    <div class="ev-numbers">
+      <div class="ev-num"><div class="n">33</div><div class="l">cancelled at SD stage</div></div>
+      <div class="ev-num"><div class="n">23</div><div class="l">cited price explicitly</div></div>
+      <div class="ev-num"><div class="n">Rs 900</div><div class="l">total perceived (100+300+500)</div></div>
+    </div>
+    <div class="verbatims-title">Customer Voices</div>
+    <div class="verbatim"><div class="v-text">"100 booking, 300 advance, 500 monthly rent = 900 total. Very high charges."</div><div class="v-context">Staggered cost discovery</div></div>
+    <div class="verbatim"><div class="v-text">"Pahle lagane pe koi security jama nahi karna padta tha, ab 300 maang rahe hain"</div><div class="v-context">Repeat customer surprised by new deposit</div></div>
+    <div class="verbatim"><div class="v-text">"Technician ne kaha range kafi kam hoga sirf 5 meter, insulation charge bhi jyada hai"</div><div class="v-context">Tech disclosed limitations + charges at the door</div></div>
+    <div class="verbatim"><div class="v-text">"My friend installed same wifi with no security money"</div><div class="v-context">Inconsistent pricing across partners</div></div>
+  </div>
+
+  <div style="text-align:center;margin-top:40px;padding:20px;border-top:3px solid var(--pink)">
+    <div style="font-size:16px;font-weight:700;color:var(--pink)">Install Funnel Task Force | Root Cause Workshop | April 2026</div>
+    <div style="font-size:13px;color:var(--gray);margin-top:6px;font-style:italic">Come with data, not opinions. Gaps and unknowns are fine. Guesses are not.</div>
+  </div>
+
+</div>
+</div>
+
+<script>
+function switchTab(idx){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  document.querySelectorAll('.tab-content').forEach((c,i)=>c.classList.toggle('active',i===idx));
+}
+</script>
+</body>
+</html>
